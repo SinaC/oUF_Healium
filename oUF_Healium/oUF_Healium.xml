@@ -1,0 +1,30 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="init.lua"/>
+
+	<Script file="locales\english.lua"/>
+	<Script file="locales\french.lua"/>
+
+	<Script file="config\config.lua"/>
+	<Script file="config\classes\druid.lua"/>
+	<Script file="config\classes\shaman.lua"/>
+	<Script file="config\filters\whitelist.lua"/>
+	<Script file="config\filters\blacklist.lua"/>
+<!--
+	<Script file="tukui_skin\medias\medias.lua"/>
+	<Script file="tukui_skin\api.lua"/>
+	<Script file="tukui_skin\colors.lua"/>
+	<Script file="tukui_skin\tags.lua"/>
+	<Script file="tukui_skin\cooldowns.lua"/>
+	<Script file="tukui_skin\ui.lua"/>
+-->
+	<Script file="debug\DumpSack.lua"/>
+	<Script file="debug\PerformanceCounter.lua"/>
+
+	<Script file="layout\FlashFrame.lua"/>
+	<Script file="layout\colors.lua"/>
+	<Script file="layout\tags.lua"/>
+	<Script file="layout\ui.lua"/>
+
+	<Script file="Healium01_25.lua"/>
+	<!--<Script file="test.lua"/>-->
+</Ui>

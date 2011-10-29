@@ -1,0 +1,10 @@
+## Interface: 40200
+## Version: 1.0
+## Author: SinaC
+## Title: oUF: Healium
+## Credits: Tukz, Engypoo, BigRedBrent, Rabbit
+## Notes: Healium raid frames for oUF
+## URL: https://github.com/SinaC/oUF_Healium
+## OptionalDeps: oUF, Tukui, ElvUI
+
+oUF_Healium.xml
