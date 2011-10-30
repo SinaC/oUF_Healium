@@ -7,6 +7,7 @@
 	<Script file="config\config.lua"/>
 	<Script file="config\classes\druid.lua"/>
 	<Script file="config\classes\shaman.lua"/>
+	<Script file="config\classes\paladin.lua"/>
 	<Script file="config\filters\whitelist.lua"/>
 	<Script file="config\filters\blacklist.lua"/>
 <!--
@@ -24,8 +25,10 @@
 	<Script file="core\colors.lua"/>
 	<Script file="core\tags.lua"/>
 	<Script file="core\ui.lua"/>
-	
+
 	<Script file="skins\tukui.lua"/>
+
+	<Script file="hook\tukui_commands.lua"/>
 
 	<Script file="Healium01_25.lua"/>
 	<!--<Script file="test.lua"/>-->

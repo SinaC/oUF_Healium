@@ -50,10 +50,6 @@ local Visibility10 = "custom [@raid11,exists] hide;show"
 
 -------------------------------------------------------
 -- Helpers
--- use:
--- none
--- used by:
--- almost every modules
 -------------------------------------------------------
 local function Message(...)
 	print("oUF_Healium:", ...)
@@ -146,10 +142,6 @@ end
 
 -------------------------------------------------------
 -- Unitframes list management
--- use:
--- PerformanceCounter:Increment
--- used by:
--- SlashCommandHandler, Update, EventHandler, Create
 -------------------------------------------------------
 local Unitframes = {}
 -- Save frame
@@ -197,10 +189,6 @@ end
 
 -------------------------------------------------------
 -- Raid header management
--- use:
--- none
--- used by:
--- SlashCommandHandler, TabMenu
 -------------------------------------------------------
 local function ToggleHeader(header)
 	if not header then return end
@@ -216,10 +204,6 @@ end
 
 -------------------------------------------------------
 -- Settings
--- use:
--- Helpers:IsSpellLearned, Helpers:ERROR
--- used by:
--- SlashCommandHandler, EventHandlers, Main
 -------------------------------------------------------
 local SpecSettings = nil
 -- Return settings for current spec
@@ -325,10 +309,6 @@ end
 
 -------------------------------------------------------
 -- Tooltips
--- use:
--- none
--- used by:
--- Create
 -------------------------------------------------------
 -- Heal buttons tooltip
 local function ButtonOnEnter(self)
@@ -387,8 +367,6 @@ end
 
 -------------------------------------------------------
 -- Healium buttons/buff/debuffs update
--- use:
--- PerformanceCounter:Increment, SpecSettings, FlashFrame:ShowFlashFrame, Unitframes:ForEachUnitframe, Helpers:IsSpellLearned
 -------------------------------------------------------
 -- Update healium button cooldown
 local function UpdateButtonCooldown(frame, index, start, duration, enabled)
@@ -1009,11 +987,6 @@ end
 
 -------------------------------------------------------
 -- Unitframe and healium buttons/buff/debuffs creation
--- use:
--- Update:UpdateFrameButtons, Update:UpdateFrameDebuffsPosition, Unitframes:SaveUnitframe,
--- Tooltips:ButtonOnEnter, Tooltips:BuffOnEnter, Tooltips:DebuffOnEnter, Update:PostUpdateHealth, Update:UpdateThreat
--- used by:
--- SlashCommandHandler, EventHandlers, Main
 -------------------------------------------------------
 
 local DelayedButtonsCreation = {}
@@ -1193,10 +1166,10 @@ local function Shared(self, unit)
 	end
 
 	-- update healium buttons visibility, icon and attributes
-	--UpdateFrameButtons(self)
+	UpdateFrameButtons(self)
 
 	-- update debuff position
-	--UpdateFrameDebuffsPosition(self)
+	UpdateFrameDebuffsPosition(self)
 
 	-- update buff/debuff/special spells
 	--UpdateFrameBuffsDebuffsPrereqs(self) -- unit not yet set, unit passed as argument is "raid" instead of player or party1 or ...
@@ -1213,13 +1186,6 @@ end
 
 -------------------------------------------------------
 -- Slash command handler
--- use:
--- Helpers:Message, DumpSack:Flush, DumpSack:Add, PerformanceCounter:Get, DumpSack:Show, PerformanceCounter:Reset, Helpers:ForEachMember
--- Settings:GetSpecSettings(), Settings:CheckSpellSettings(), Create:CreateDelayedButtons(), Unitframes:ForEachUnitframe, Update:UpdateFrameButtons,
--- Update:UpdateFrameDebuffsPosition, Update:UpdateFrameBuffsDebuffsPrereqs, Update:UpdateCooldowns(), Update:UpdateOOMSpells, Update:UpdateOORSpells,
--- PlayerRaidHeader, PetRaidHeader, TankRaidHeader, NamelistRaidHeader, Helpers:AddToNamelist, Helpers:RemoveFromNamelist, Unitframes:GetUnitframesFromUnit
--- used by:
--- none
 -------------------------------------------------------
 local LastPerformanceCounterReset = GetTime()
 local function SlashHandlerShowHelp()
@@ -1461,12 +1427,6 @@ end
 
 -------------------------------------------------------
 -- Handle healium specific events
--- use:
--- PerformanceCounter:Increment, Settings:GetSpecSettings, Settings:CheckSpellSettings, Unitframes:ForEachUnitframe, Update:UpdateFrameButtons,
--- Update:UpdateFrameDebuffsPosition, Update:UpdateFrameBuffsDebuffsPrereqs, Update:UpdateCooldowns, Unitframes:GetUnitframesFromUnit, Update:UpdateOOMSpells,
--- Update:UpdateOORSpells
--- used by:
--- none
 -------------------------------------------------------
 
 local fSettingsChecked = false -- stupid workaround  (when /reloadui PLAYER_ALIVE is not called)
@@ -1597,10 +1557,6 @@ end
 
 -------------------------------------------------------
 -- Main
--- use:
--- Settings:InitializeSettings, PlayerRaidHeader, PetRaidHeader, TankRaidHeader, NamelistRaidHeader, Create:Shared
--- used by:
--- none
 -------------------------------------------------------
 
 -- Remove unused section, get spellName from spellID, update buff/debuff lists, set default value
@@ -1713,4 +1669,28 @@ oUF:Factory(function(self)
 		NamelistRaidHeader:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -400, -300)
 		NamelistRaidHeader.hVisibilityAttribute = Visibility25
 	end
+end)
+
+-------------------------------------------------------
+-- Kill blizzard frames
+-------------------------------------------------------
+local KillFrame = CreateFrame("Frame")
+KillFrame:RegisterEvent("PLAYER_LOGIN")
+KillFrame:SetScript("OnEvent", function(self, event, addon)
+	local dummy = function() return end
+	local function Kill(object)
+		if object.UnregisterAllEvents then
+			object:UnregisterAllEvents()
+		end
+		object.Show = dummy
+		object:Hide()
+	end
+	InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
+	InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)
+	InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
+	InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
+	Kill(CompactRaidFrameManager)
+	Kill(CompactRaidFrameContainer)
+	CompactUnitFrame_UpateVisible = dummy
+	CompactUnitFrame_UpdateAll = dummy
 end)

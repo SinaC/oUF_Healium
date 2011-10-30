@@ -1,17 +1,35 @@
-config
+Version 1.2
+Blizzard raid frames hidden
+Tukui /dps and /heal hooked
+Bug fixed: UpdateFrameButtons was not called when a player joined the party
+Paladin spells added
 
-C["tanks"] = {
-	enable = true
-}
+Version 1.1
+Tukui skin integrated
+Folder structure modified
+Config structure modified
 
-C["pets"] = {
-	enable = true
-}
+Version 1.0
+Every dependencies on Tukui removed
 
-C["namelist"] = {
-	enable = true,
-	list = ""
-}
+Version 0.1
+Main functionality implemented
 
-if using Tukui, oUF_Healium options should be overwritten by Tukui options
-include Tukui skin in oUF_Healium
+ISSUES:
+/heal doesn't work after /dps --> skin must be an external addon with a requireddep on tukui but a optionaldep on oUF_Healium
+
+TODO:
+Disable Tukui_Raid and Tukui_Raid_Healing on logon if found
+DumpFrame
+ElvUI skin
+raid header name: check oUF_MovableFrames.lua   fct smartName
+add tab in tukui skin if Tukui_TabMenu found add options in contextual menu
+set button.hNotUsable, find which event could be used to check this (usable = select(1,IsUsableSpell))
+resize frame (smaller height) when raid > 15
+pet spells
+reload settings/UpdateFrameButtons when resetting talents
+why raid frame moves automatically? -> probably because unitframes are centered in raid frame
+multirow: 2 rows of spell/buff/debuff (looks ugly :p)
+character specific settings
+addon CPU profiling  http://wow.curseforge.com/addons/addon-profiler/   http://www.wowinterface.com/downloads/info13888-AddonProfiler.html
+set automatically MaxButtonCount using max(#spells foreach spec of current player)

@@ -229,3 +229,22 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 	end
 	--print("<Tukui:CreateHealiumUnitframe")
 end
+
+-- hook Tukui slash commands
+local SlashCmdList_TUKUIHEAL_ = SlashCmdList.TUKUIHEAL
+function SlashCmdList:TUKUIHEAL()
+	--print("oUF_Healium /heal hooked function")
+	DisableAddOn("Tukui_Raid")
+	DisableAddOn("Tukui_Raid_Healing")
+	EnableAddOn("oUF_Healium")
+	ReloadUI()
+end
+
+local SlashCmdList_TUKUIDPS_ = SlashCmdList.TUKUIDPS
+function SlashCmdList:TUKUIDPS()
+	--print("oUF_Healium /dps hooked function")
+	DisableAddOn("Tukui_Raid_Healing")
+	DisableAddOn("oUF_Healium")
+	EnableAddOn("Tukui_Raid")
+	ReloadUI()
+end
