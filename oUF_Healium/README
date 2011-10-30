@@ -1,0 +1,17 @@
+config
+
+C["tanks"] = {
+	enable = true
+}
+
+C["pets"] = {
+	enable = true
+}
+
+C["namelist"] = {
+	enable = true,
+	list = ""
+}
+
+if using Tukui, oUF_Healium options should be overwritten by Tukui options
+include Tukui skin in oUF_Healium

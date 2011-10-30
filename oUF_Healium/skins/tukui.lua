@@ -1,16 +1,11 @@
-local H, C, L, oUF = unpack(select(2, ...))
---local T, _, _ = unpack(Tukui)
+if not Tukui then return end
 
-local function MLAnchorUpdate(self) -- if TUKUI, get T.MLAnchorUpdate
-	if self.Leader:IsShown() then
-		self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
-	else
-		self.MasterLooter:SetPoint("TOPLEFT", 2, 8)
-	end
-end
+local H, _, _, _ = unpack(Healium)
+local T, C, L = unpack(Tukui)
 
+T.CreateHealiumButton_ = T.CreateHealiumButton -- save old function
 function H:CreateHealiumButton(parent, name, size, anchor)
-	print(">CreateHealiumButton")
+	--print(">Tukui:CreateHealiumButton")
 	-- frame
 	local button = CreateFrame("Button", name, parent, "SecureActionButtonTemplate")
 	button:CreatePanel("Default", size, size, unpack(anchor))
@@ -27,12 +22,13 @@ function H:CreateHealiumButton(parent, name, size, anchor)
 	-- cooldown overlay
 	button.cooldown = CreateFrame("Cooldown", "$parentCD", button, "CooldownFrameTemplate")
 	button.cooldown:SetAllPoints(button.texture)
-	print("<CreateHealiumButton")
+	--print("<Tukui:CreateHealiumButton")
 	return button
 end
 
+T.CreateHealiumDebuff_ = T.CreateHealiumDebuff -- save old function
 function H:CreateHealiumDebuff(parent, name, size, anchor)
-	print(">CreateHealiumDebuff")
+	--print(">Tukui:CreateHealiumDebuff")
 	-- frame
 	local debuff = CreateFrame("Frame", name, parent) -- --debuff = CreateFrame("Frame", debuffName, parent, "TargetDebuffFrameTemplate")
 	debuff:CreatePanel("Default", size, size, unpack(anchor))
@@ -50,12 +46,13 @@ function H:CreateHealiumDebuff(parent, name, size, anchor)
 	debuff.count:SetFont(C["media"].uffont, 14, "OUTLINE")
 	debuff.count:Point("BOTTOMRIGHT", 1, -1)
 	debuff.count:SetJustifyH("CENTER")
-	print("<CreateHealiumDebuff")
+	--print("<Tukui:CreateHealiumDebuff")
 	return debuff
 end
 
+T.CreateHealiumBuff_ = T.CreateHealiumBuff
 function H:CreateHealiumBuff(parent, name, size, anchor)
-	print(">CreateHealiumBuff")
+	--print(">Tukui:CreateHealiumBuff")
 	-- frame
 	local buff = CreateFrame("Frame", name, parent) --buff = CreateFrame("Frame", buffName, frame, "TargetBuffFrameTemplate")
 	buff:CreatePanel("Default", size, size, unpack(anchor))
@@ -73,40 +70,26 @@ function H:CreateHealiumBuff(parent, name, size, anchor)
 	buff.count:SetFont(C["media"].uffont, 14, "OUTLINE")
 	buff.count:Point("BOTTOMRIGHT", 1, -1)
 	buff.count:SetJustifyH("CENTER")
-	print("<CreateHealiumBuff")
+	--print("<Tukui:CreateHealiumBuff")
 	return buff
 end
 
+T.CreateHealiumUnitframe_ = T.CreateHealiumUnitframe
 function H:CreateHealiumUnitframe(self, unitframeWidth)
-	print(">CreateHealiumUnitframe")
-	self.colors = H.oUF_colors
+	--print(">Tukui:CreateHealiumUnitframe")
+	self.colors = T.oUF_colors
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	self.menu = function(self) -- if TUKUI, get T.SpawnMenu
-		local unit = self.unit:gsub("(.)", string.upper, 1)
-		if unit == "Targettarget" or unit == "focustarget" or unit == "pettarget" then return end
-
-		if _G[unit.."FrameDropDown"] then
-			ToggleDropDownMenu(1, nil, _G[unit.."FrameDropDown"], "cursor")
-		elseif (self.unit:match("party")) then
-			ToggleDropDownMenu(1, nil, _G["PartyMemberFrame"..self.id.."DropDown"], "cursor")
-		else
-			FriendsDropDown.unit = self.unit
-			FriendsDropDown.id = self.id
-			FriendsDropDown.initialize = RaidFrameDropDown_Initialize
-			ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
-		end
-	end
-
-	self:SetBackdrop({bgFile = C["media"].blank, insets = {top = -H.mult, left = -H.mult, bottom = -H.mult, right = -H.mult}})
+	self.menu = T.SpawnMenu
+	self:SetBackdrop({bgFile = C["media"].blank, insets = {top = -T.mult, left = -T.mult, bottom = -T.mult, right = -T.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
 
 	local health = CreateFrame('StatusBar', nil, self)
 	health:SetPoint("TOPLEFT")
 	health:SetPoint("TOPRIGHT")
-	health:Height(27*H.raidscale)
+	health:Height(27*T.raidscale)
 	health:SetStatusBarTexture(C["media"].normTex)
 	self.Health = health
 
@@ -119,7 +102,7 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 
 	health.value = health:CreateFontString(nil, "OVERLAY")
 	health.value:SetPoint("RIGHT", health, -3, 1)
-	health.value:SetFont(C["media"].uffont, 12*H.raidscale, "THINOUTLINE")
+	health.value:SetFont(C["media"].uffont, 12*T.raidscale, "THINOUTLINE")
 	health.value:SetTextColor(1,1,1)
 	health.value:SetShadowOffset(1, -1)
 	self.Health.value = health.value
@@ -139,7 +122,7 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 	end
 
 	local power = CreateFrame("StatusBar", nil, self)
-	power:Height(4*H.raidscale)
+	power:Height(4*T.raidscale)
 	power:Point("TOPLEFT", health, "BOTTOMLEFT", 0, -1)
 	power:Point("TOPRIGHT", health, "BOTTOMRIGHT", 0, -1)
 	power:SetStatusBarTexture(C["media"].normTex)
@@ -164,32 +147,32 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 
 	local name = health:CreateFontString(nil, "OVERLAY")
 	name:SetPoint("LEFT", health, 3, 0)
-	name:SetFont(C["media"].uffont, 12*H.raidscale, "THINOUTLINE")
+	name:SetFont(C["media"].uffont, 12*T.raidscale, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
-	self:Tag(name, "[oUF_Healium:namemedium]")
+	self:Tag(name, "[Tukui:namemedium]")
 	self.Name = name
 
 	local leader = health:CreateTexture(nil, "OVERLAY")
-	leader:Height(12*H.raidscale)
-	leader:Width(12*H.raidscale)
+	leader:Height(12*T.raidscale)
+	leader:Width(12*T.raidscale)
 	leader:SetPoint("TOPLEFT", 0, 6)
 	self.Leader = leader
 
 	--t:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons");
 	--SetRaidTargetIconTexture(t,i);
 	local LFDRole = health:CreateTexture(nil, "OVERLAY")
-	LFDRole:Height(6*H.raidscale)
-	LFDRole:Width(6*H.raidscale)
+	LFDRole:Height(6*T.raidscale)
+	LFDRole:Width(6*T.raidscale)
 	LFDRole:Point("TOPRIGHT", -2, -2)
 	LFDRole:SetTexture("Interface\\AddOns\\Tukui\\medias\\textures\\lfdicons.blp")
 	self.LFDRole = LFDRole
 
 	local masterLooter = health:CreateTexture(nil, "OVERLAY")
-	masterLooter:Height(12*H.raidscale)
-	masterLooter:Width(12*H.raidscale)
+	masterLooter:Height(12*T.raidscale)
+	masterLooter:Width(12*T.raidscale)
 	self.MasterLooter = masterLooter
-	self:RegisterEvent("PARTY_LEADER_CHANGED", MLAnchorUpdate) -- if TUKUI, get T.MLAnchorUpdate
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", MLAnchorUpdate) -- if TUKUI, get T.MLAnchorUpdate
+	self:RegisterEvent("PARTY_LEADER_CHANGED", T.MLAnchorUpdate)
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", T.MLAnchorUpdate)
 
 	-- if C["unitframes"].aggro == true then
 		-- tinsert(self.__elements, UpdateThreat)
@@ -200,16 +183,16 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 
 	if C["unitframes"].showsymbols == true then
 		local RaidIcon = health:CreateTexture(nil, 'OVERLAY')
-		RaidIcon:Height(18*H.raidscale)
-		RaidIcon:Width(18*H.raidscale)
+		RaidIcon:Height(18*T.raidscale)
+		RaidIcon:Width(18*T.raidscale)
 		RaidIcon:SetPoint('CENTER', self, 'TOP')
 		RaidIcon:SetTexture("Interface\\AddOns\\Tukui\\medias\\textures\\raidicons.blp") -- thx hankthetank for texture
 		self.RaidIcon = RaidIcon
 	end
 
 	local ReadyCheck = self.Power:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:Height(12*H.raidscale)
-	ReadyCheck:Width(12*H.raidscale)
+	ReadyCheck:Height(12*T.raidscale)
+	ReadyCheck:Width(12*T.raidscale)
 	ReadyCheck:SetPoint('CENTER')
 	self.ReadyCheck = ReadyCheck
 
@@ -227,14 +210,14 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 		local mhpb = CreateFrame('StatusBar', nil, self.Health)
 		mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 		mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-		mhpb:SetWidth(unitframeWidth*H.raidscale)
+		mhpb:SetWidth(unitframeWidth*T.raidscale)
 		mhpb:SetStatusBarTexture(C["media"].normTex)
 		mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local ohpb = CreateFrame('StatusBar', nil, self.Health)
 		ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 		ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-		ohpb:SetWidth(unitframeWidth*H.raidscale)
+		ohpb:SetWidth(unitframeWidth*T.raidscale)
 		ohpb:SetStatusBarTexture(C["media"].normTex)
 		ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
@@ -244,5 +227,5 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 			maxOverflow = 1,
 		}
 	end
-	print("<CreateHealiumUnitframe")
+	--print("<Tukui:CreateHealiumUnitframe")
 end

@@ -30,7 +30,7 @@ local utf8sub = function(string, i, dots)
 	end
 end
 
-if oUF.TagEvents then
+if oUF.TagEvents then -- Well done Tukz, why did you modified Tags internal structure ??
 	oUF.TagEvents['oUF_Healium:namemedium'] = 'UNIT_NAME_UPDATE'
 	oUF.Tags['oUF_Healium:namemedium'] = function(unit)
 		local name = UnitName(unit)

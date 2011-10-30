@@ -20,10 +20,12 @@
 	<Script file="debug\DumpSack.lua"/>
 	<Script file="debug\PerformanceCounter.lua"/>
 
-	<Script file="layout\FlashFrame.lua"/>
-	<Script file="layout\colors.lua"/>
-	<Script file="layout\tags.lua"/>
-	<Script file="layout\ui.lua"/>
+	<Script file="core\FlashFrame.lua"/>
+	<Script file="core\colors.lua"/>
+	<Script file="core\tags.lua"/>
+	<Script file="core\ui.lua"/>
+	
+	<Script file="skins\tukui.lua"/>
 
 	<Script file="Healium01_25.lua"/>
 	<!--<Script file="test.lua"/>-->

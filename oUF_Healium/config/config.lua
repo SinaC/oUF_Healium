@@ -3,14 +3,8 @@ local H, C, L, oUF = unpack(select(2, ...))
 C["general"] = {
 	debug = 10000,						-- debug mode
 
-	showPets = false,					-- add a frame for pets
-	showTanks = false,					-- add a frame for tanks
-	showNamelist = false,				-- add a frame with a list of player name
-
 	showsolo = true,					-- show raid frame when solo [T]
 	showplayerinparty = true,			-- show my player frame in party [T]
-
-	namelist = "Yoog,Sweetlight,Mirabillis",
 }
 
 C["unitframes"] = {
@@ -43,4 +37,17 @@ C["unitframes"] = {
 	showBuffDebuffTooltip = true,		-- display buff and debuff tooltip
 	showOOM = true,						-- color heal button in blue when OOM
 	showOOR = false,					-- very time consuming and not really useful (OOR is already managed for each unitframe)
+}
+
+C["tanks"] = {
+	enable = true
+}
+
+C["pets"] = {
+	enable = true
+}
+
+C["namelist"] = {
+	enable = true,
+	list = "Yoog,Sweetlight,Mirabillis"
 }

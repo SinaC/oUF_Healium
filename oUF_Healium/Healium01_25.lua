@@ -319,7 +319,7 @@ local function InitializeSettings()
 	end
 
 	-- Set namelist to "" if not found
-	if not C.general.namelist then C.general.namelist = "" end
+	if not C.namelist.list then C.namelist.list = "" end
 end
 
 
@@ -1374,13 +1374,13 @@ local function SlashHandlerNamelist(cmd)
 			end
 		end
 		if name then
-			local fAdded = AddToNamelist(C.general.namelist, name)
+			local fAdded = AddToNamelist(C.namelist.list, name)
 			if not fAdded then
 				Message(L.healium_CONSOLE_NAMELIST_ADDALREADY)
 			else
 				Message(L.healium_CONSOLE_NAMELIST_ADDED:format(name))
 				if NamelistRaidHeader then
-					NamelistRaidHeader:SetAttribute("namelist", C.general.namelist)
+					NamelistRaidHeader:SetAttribute("namelist", C.namelist.list)
 				end
 			end
 		else
@@ -1398,13 +1398,13 @@ local function SlashHandlerNamelist(cmd)
 			end
 		end
 		if name then
-			local fRemoved = RemoveFromNamelist(C.general.namelist, name)
+			local fRemoved = RemoveFromNamelist(C.namelist.list, name)
 			if not fRemoved then
 				Message(L.healium_CONSOLE_NAMELIST_REMOVENOTFOUND)
 			else
 				Message(L.healium_CONSOLE_NAMELIST_REMOVED:format(name))
 				if NamelistRaidHeader then
-					NamelistRaidHeader:SetAttribute("namelist", C.general.namelist)
+					NamelistRaidHeader:SetAttribute("namelist", C.namelist.list)
 				end
 			end
 		else
@@ -1413,7 +1413,7 @@ local function SlashHandlerNamelist(cmd)
 	end
 
 	local function NamelistClear()
-		C.general.namelist = ""
+		C.namelist.list = ""
 		if NamelistRaidHeader then
 			NamelistRaidHeader:SetAttribute("namelist", list)
 		end
@@ -1637,7 +1637,7 @@ oUF:Factory(function(self)
 	PlayerRaidHeader.hVisibilityAttribute = Visibility25
 
 	-- Pets, no pets in a group with 10 or more players
-	if C.general.showPets then
+	if C.pets and C.pets.enable then
 		PetRaidHeader = self:SpawnHeader("oUF_HealiumRaidPet0125", "SecureGroupPetHeaderTemplate", Visibility10,
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
@@ -1667,7 +1667,7 @@ oUF:Factory(function(self)
 		PetRaidHeader.hVisibilityAttribute = Visibility10
 	end
 
-	if C.general.showTanks then
+	if C.tanks and C.tanks.enable then
 		-- Tank frame (attributes: [["groupFilter", "MAINTANK,TANK"]],  [["groupBy", "ROLE"]],    showParty, showRaid but not showSolo)
 		TankRaidHeader = self:SpawnHeader("oUF_HealiumRaidTank0125", nil, Visibilityl25,
 			'oUF-initialConfigFunction', [[
@@ -1691,7 +1691,7 @@ oUF:Factory(function(self)
 		TankRaidHeader.hVisibilityAttribute = Visibility25
 	end
 
-	if C.general.showNamelist and C.general.namelist then
+	if C.namelist and C.namelist.enable then
 		-- Namelist frame
 		NamelistRaidHeader = self:SpawnHeader("oUF_HealiumRaidNamelist0125", nil, Visibility25,
 			'oUF-initialConfigFunction', [[
@@ -1708,7 +1708,7 @@ oUF:Factory(function(self)
 			"yOffset", -4,
 			"sortMethod", "NAME",
 			"unitsPerColumn", 20,
-			"nameList", C.general.namelist
+			"nameList", C.namelist.list
 		)
 		NamelistRaidHeader:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -400, -300)
 		NamelistRaidHeader.hVisibilityAttribute = Visibility25

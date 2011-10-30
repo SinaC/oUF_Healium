@@ -2,11 +2,33 @@
 -- game fonts: http://www.wowwiki.com/API_FontInstance_SetFontObject
 local H, C, L, oUF = unpack(select(2, ...))
 
-local function MLAnchorUpdate(self)
-	if self.Leader:IsShown() then
-		self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
+local function utf8sub(string, i, dots)
+	if not string then return end
+	local bytes = string:len()
+	if (bytes <= i) then
+		return string
 	else
-		self.MasterLooter:SetPoint("TOPLEFT", 2, 8)
+		local len, pos = 0, 1
+		while(pos <= bytes) do
+			len = len + 1
+			local c = string:byte(pos)
+			if (c > 0 and c <= 127) then
+				pos = pos + 1
+			elseif (c >= 192 and c <= 223) then
+				pos = pos + 2
+			elseif (c >= 224 and c <= 239) then
+				pos = pos + 3
+			elseif (c >= 240 and c <= 247) then
+				pos = pos + 4
+			end
+			if (len == i) then break end
+		end
+
+		if (len == i and pos <= bytes) then
+			return string:sub(1, pos - 1)..(dots and '...' or '')
+		else
+			return string
+		end
 	end
 end
 
@@ -207,8 +229,6 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 	masterLooter:SetHeight(12)
 	masterLooter:SetWidth(12)
 	self.MasterLooter = masterLooter
-	self:RegisterEvent("PARTY_LEADER_CHANGED", MLAnchorUpdate)
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", MLAnchorUpdate)
 
 	if C["unitframes"].showsymbols == true then
 		local RaidIcon = health:CreateTexture(nil, 'OVERLAY')
