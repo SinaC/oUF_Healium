@@ -1,6 +1,9 @@
+Version 1.3
+Tukui moved to an independant addon
+
 Version 1.2
 Blizzard raid frames hidden
-Tukui /dps and /heal hooked
+Tukui /dps and /heal hooked -> doesn't work
 Bug fixed: UpdateFrameButtons was not called when a player joined the party
 Paladin spells added
 

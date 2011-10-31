@@ -1,0 +1,1 @@
+## Interface: 40200## Version: 1.0## Author: SinaC## Title: oUF: Healium Tukui Skin## Credits: Tukz, Engypoo, BigRedBrent, Rabbit## Notes: Healium raid frames skinned for Tukui## URL: https://github.com/SinaC/oUF_Healium## RequiredDeps: Tukui## OptionalDeps: oUF_HealiumoUF_Healium_TukuiSkin.xml

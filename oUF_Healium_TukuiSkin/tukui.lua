@@ -1,9 +1,30 @@
+-- Hook Tukui slash commands
 if not Tukui then return end
-
-local H, _, _, _ = unpack(Healium)
 local T, C, L = unpack(Tukui)
 
-T.CreateHealiumButton_ = T.CreateHealiumButton -- save old function
+local SlashCmdList_TUKUIHEAL_ = SlashCmdList.TUKUIHEAL -- save old function
+function SlashCmdList:TUKUIHEAL()
+	--print("oUF_Healium /heal hooked function")
+	DisableAddOn("Tukui_Raid")
+	DisableAddOn("Tukui_Raid_Healing")
+	EnableAddOn("oUF_Healium")
+	ReloadUI()
+end
+
+local SlashCmdList_TUKUIDPS_ = SlashCmdList.TUKUIDPS -- save old function
+function SlashCmdList:TUKUIDPS()
+	--print("oUF_Healium /dps hooked function")
+	DisableAddOn("Tukui_Raid_Healing")
+	DisableAddOn("oUF_Healium") -- Dont desactivate oUF_Healium_TukuiSkin so slash commands are always hooked
+	EnableAddOn("Tukui_Raid")
+	ReloadUI()
+end
+
+-- Skin Healium components
+if not Healium then return end
+local H, _, _, _ = unpack(Healium)
+
+local CreateHealiumButton_ = H.CreateHealiumButton -- save old function
 function H:CreateHealiumButton(parent, name, size, anchor)
 	--print(">Tukui:CreateHealiumButton")
 	-- frame
@@ -26,7 +47,7 @@ function H:CreateHealiumButton(parent, name, size, anchor)
 	return button
 end
 
-T.CreateHealiumDebuff_ = T.CreateHealiumDebuff -- save old function
+local CreateHealiumDebuff_ = H.CreateHealiumDebuff -- save old function
 function H:CreateHealiumDebuff(parent, name, size, anchor)
 	--print(">Tukui:CreateHealiumDebuff")
 	-- frame
@@ -50,7 +71,7 @@ function H:CreateHealiumDebuff(parent, name, size, anchor)
 	return debuff
 end
 
-T.CreateHealiumBuff_ = T.CreateHealiumBuff
+local CreateHealiumBuff_ = H.CreateHealiumBuff
 function H:CreateHealiumBuff(parent, name, size, anchor)
 	--print(">Tukui:CreateHealiumBuff")
 	-- frame
@@ -74,7 +95,7 @@ function H:CreateHealiumBuff(parent, name, size, anchor)
 	return buff
 end
 
-T.CreateHealiumUnitframe_ = T.CreateHealiumUnitframe
+local CreateHealiumUnitframe_ = H.CreateHealiumUnitframe
 function H:CreateHealiumUnitframe(self, unitframeWidth)
 	--print(">Tukui:CreateHealiumUnitframe")
 	self.colors = T.oUF_colors
@@ -228,23 +249,4 @@ function H:CreateHealiumUnitframe(self, unitframeWidth)
 		}
 	end
 	--print("<Tukui:CreateHealiumUnitframe")
-end
-
--- hook Tukui slash commands
-local SlashCmdList_TUKUIHEAL_ = SlashCmdList.TUKUIHEAL
-function SlashCmdList:TUKUIHEAL()
-	--print("oUF_Healium /heal hooked function")
-	DisableAddOn("Tukui_Raid")
-	DisableAddOn("Tukui_Raid_Healing")
-	EnableAddOn("oUF_Healium")
-	ReloadUI()
-end
-
-local SlashCmdList_TUKUIDPS_ = SlashCmdList.TUKUIDPS
-function SlashCmdList:TUKUIDPS()
-	--print("oUF_Healium /dps hooked function")
-	DisableAddOn("Tukui_Raid_Healing")
-	DisableAddOn("oUF_Healium")
-	EnableAddOn("Tukui_Raid")
-	ReloadUI()
 end

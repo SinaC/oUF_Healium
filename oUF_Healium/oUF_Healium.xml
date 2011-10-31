@@ -26,10 +26,6 @@
 	<Script file="core\tags.lua"/>
 	<Script file="core\ui.lua"/>
 
-	<Script file="skins\tukui.lua"/>
-
-	<Script file="hook\tukui_commands.lua"/>
-
 	<Script file="Healium01_25.lua"/>
 	<!--<Script file="test.lua"/>-->
 </Ui>
